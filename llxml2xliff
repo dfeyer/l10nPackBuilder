@@ -1,0 +1,50 @@
+#!/bin/bash
+
+. ./functions.sh
+
+function usage() {
+	echo
+	echo "Usage:"
+	echo "# llxml2xliff.sh extension language /path/to/source.xml /path/to/target.xml"
+}
+
+function buildSource() {
+	xsltproc --stringparam source "" \
+		--stringparam lang $LANG \
+		--stringparam extension $EXTENSION \
+	  	--stringparam date "$(date -u)" \
+	  	./xsl/llxml2xliff.xsl $SOURCE
+}
+
+function buildTarget() {
+	xsltproc --stringparam source $TARGET \
+		--stringparam lang $LANG \
+		--stringparam extension $EXTENSION \
+	  	--stringparam date "$(date -u)" \
+	  	./xsl/llxml2xliff.xsl $SOURCE
+}
+
+EXTENSION=$1
+if [ "$EXTENSION" == "" ]; then
+	usage
+	error "[ERROR] Invalid argument ..." 1
+fi
+LANG=$2
+SOURCE=$3
+TARGET=$4
+
+if [ -f "$SOURCE" ] && [ -f "$TARGET" ]; then
+	echo
+	echo "Build Target ($SOURCE - $TARGET)"
+	buildTarget
+	exit 0
+fi
+
+if [ -f "$SOURCE" ]; then
+	echo
+	echo "Build Source ($SOURCE)"
+	buildSource
+	exit 0
+fi
+
+error "Source and/or target file not found ..." 
