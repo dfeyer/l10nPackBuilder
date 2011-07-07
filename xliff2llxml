@@ -2,4 +2,44 @@
 
 . ./functions.sh
 
+function usage() {
+	echo
+	echo "Usage:"
+	echo "# xliff2llxml extension language /path/to/source.xlf [/path/to/target.xlf]"
+}
+
+function buildSource() {
+	xsltproc --stringparam lang $LANG \
+		--stringparam extension $EXTENSION \
+	  	--stringparam date "$(date -u)" \
+	  	./xsl/xliff2llxml-source.xsl $SOURCE
+}
+
+function buildTarget() {
+	xsltproc --stringparam lang $LANG \
+		--stringparam extension $EXTENSION \
+	  	--stringparam date "$(date -u)" \
+	  	./xsl/xliff2llxml-target.xsl $SOURCE
+}
+
+EXTENSION=$1
+if [ "$EXTENSION" == "" ]; then
+	usage
+	error "[ERROR] Invalid argument ..." 1
+fi
+LANG=$2
+SOURCE=$3
+TARGET=$4
+
+if [ "$LANG" == "default" ]; then
+	buildSource
+	exit 0
+fi
+if [ "$LANG" != "default" ]; then
+	buildTarget
+	exit 0
+fi
+
+error "Template and/or target file not found ..." 
+
 exit 0

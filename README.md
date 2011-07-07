@@ -16,3 +16,15 @@ Tools to convert LLXML file to XLIFF
 
 	llxml2xliff extensionKey languageKey sourceFile targetFile
 
+xliff2llxml
+-----------
+
+Tools to convert XLIFF to LLXML
+
+### Build default LLXML
+
+	xliff2llxml extensionKey default xliffFile
+
+### Build target LLXML (language pack)
+
+	xliff2llxml extensionKey languageKey xliffFile

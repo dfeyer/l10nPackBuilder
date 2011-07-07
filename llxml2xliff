@@ -5,7 +5,7 @@
 function usage() {
 	echo
 	echo "Usage:"
-	echo "# llxml2xliff.sh extension language /path/to/source.xml /path/to/target.xml"
+	echo "# llxml2xliff extension language /path/to/source.xml /path/to/target.xml"
 }
 
 function buildSource() {
@@ -34,15 +34,11 @@ SOURCE=$3
 TARGET=$4
 
 if [ -f "$SOURCE" ] && [ -f "$TARGET" ]; then
-	echo
-	echo "Build Target ($SOURCE - $TARGET)"
 	buildTarget
 	exit 0
 fi
 
 if [ -f "$SOURCE" ]; then
-	echo
-	echo "Build Source ($SOURCE)"
 	buildSource
 	exit 0
 fi
